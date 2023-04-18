@@ -53,7 +53,7 @@ function normalizePort(val) {
  */
 
 function onError(error) {
-  console.log(port+"aaa");
+  console.log(port+"WWW");
 
   if (error.syscall !== 'listen') {
     throw error;

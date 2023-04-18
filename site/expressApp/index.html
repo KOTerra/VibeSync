@@ -5,8 +5,9 @@
   </head>
   <body>
     <h1>Sentiment Analysis</h1>
-    <label for="text">Enter some text:</label>
+    <label for="text">Enter some text:</label><div/>
     <textarea id="text" name="text" rows="4" cols="50"></textarea>
+    <div/>
     <button id="analyze-button" type="button">Analyze</button>
     <div id="result"></div>
     <script>
@@ -37,5 +38,10 @@
         });
       });
     </script>
+
+    <div> <h2>Enter a Spotify link to a song, playlist, or album:</h2>
+      <input type="text" id="spotify-link" placeholder="https://open.spotify.com/...">
+      <button id="recommend-movies">Recommend Movies</button>
+      <ul id="movie-list"></ul></div>
   </body>
 </html>
