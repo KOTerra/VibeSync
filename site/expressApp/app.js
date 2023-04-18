@@ -8,7 +8,7 @@ const port=3000;
 const index=require('./routes/index');
 const users=require('./routes/users');
 
-const songRecommendations=require('./public/javascripts/songRecommendation');
+const songRecommendations=require('./public/javascripts/songRecommendations');
 
 
 songRecommendations.recommendSongs();
