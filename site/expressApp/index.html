@@ -3,45 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <title>Sentiment Analysis</title>
+  <link rel="stylesheet" type="text/css" href="/stylesheets/style.css" />
 </head>
 
 <body>
-  <h1>Sentiment Analysis</h1>
-  <label for="text">Enter some text:</label>
-  <div />
-  <textarea id="text" name="text" rows="4" cols="50"></textarea>
-  <div />
-  <button id="analyze-button" type="button">Analyze</button>
-  <div id="result"></div>
-  <script>
-    const analyzeButton = document.querySelector('#analyze-button');
-    const resultDiv = document.querySelector('#result');
-
-    analyzeButton.addEventListener('click', () => {
-      const text = document.querySelector('#text').value;
-      fetch('/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ text: text })
-      })
-        .then((response) => response.json())
-        .then((sentiment) => {
-          resultDiv.innerHTML = `
-            <p>Positive: ${sentiment.pos.toFixed(2)}</p>
-            <p>Neutral: ${sentiment.neu.toFixed(2)}</p>
-            <p>Negative: ${sentiment.neg.toFixed(2)}</p>
-            <p>Compound: ${sentiment.compound.toFixed(2)}</p>
-          `;
-        })
-        .catch((error) => {
-          console.error(error);
-          resultDiv.innerHTML = '<p>An error occurred. Please try again later.</p>';
-        });
-    });
-  </script>
-
   <div>
     <h2>Enter a Spotify link to a song, playlist, or album:</h2>
     <input type="text" id="spotify-link" placeholder="https://open.spotify.com/...">
@@ -68,7 +33,19 @@
     <div id="tmdb-info"></div>
   </div>
   <button class="switch-button"></button>
-  <script src="script.js"></script>
+ 
+
+
+  <h1>Sentiment Analysis</h1>
+  <label for="text">Enter some text:</label>
+  <div />
+  <textarea id="text" name="text" rows="4" cols="50"></textarea>
+  <div />
+  <button id="analyze-button" type="button">Analyze</button>
+  <div id="result"></div>
+  <script src="/javascripts/contextSwitch.js"></script>
+
+
 
 </body>
 
