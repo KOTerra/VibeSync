@@ -1,28 +1,31 @@
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <title>Sentiment Analysis</title>
-  </head>
-  <body>
-    <h1>Sentiment Analysis</h1>
-    <label for="text">Enter some text:</label><div/>
-    <textarea id="text" name="text" rows="4" cols="50"></textarea>
-    <div/>
-    <button id="analyze-button" type="button">Analyze</button>
-    <div id="result"></div>
-    <script>
-      const analyzeButton = document.querySelector('#analyze-button');
-      const resultDiv = document.querySelector('#result');
 
-      analyzeButton.addEventListener('click', () => {
-        const text = document.querySelector('#text').value;
-        fetch('/', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ text: text })
-        })
+<head>
+  <meta charset="UTF-8">
+  <title>Sentiment Analysis</title>
+</head>
+
+<body>
+  <h1>Sentiment Analysis</h1>
+  <label for="text">Enter some text:</label>
+  <div />
+  <textarea id="text" name="text" rows="4" cols="50"></textarea>
+  <div />
+  <button id="analyze-button" type="button">Analyze</button>
+  <div id="result"></div>
+  <script>
+    const analyzeButton = document.querySelector('#analyze-button');
+    const resultDiv = document.querySelector('#result');
+
+    analyzeButton.addEventListener('click', () => {
+      const text = document.querySelector('#text').value;
+      fetch('/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ text: text })
+      })
         .then((response) => response.json())
         .then((sentiment) => {
           resultDiv.innerHTML = `
@@ -36,12 +39,37 @@
           console.error(error);
           resultDiv.innerHTML = '<p>An error occurred. Please try again later.</p>';
         });
-      });
-    </script>
+    });
+  </script>
 
-    <div> <h2>Enter a Spotify link to a song, playlist, or album:</h2>
-      <input type="text" id="spotify-link" placeholder="https://open.spotify.com/...">
-      <button id="recommend-movies">Recommend Movies</button>
-      <ul id="movie-list"></ul></div>
-  </body>
+  <div>
+    <h2>Enter a Spotify link to a song, playlist, or album:</h2>
+    <input type="text" id="spotify-link" placeholder="https://open.spotify.com/...">
+    <button id="recommend-movies">Recommend Movies</button>
+    <ul id="movie-list"></ul>
+  </div>
+
+  <div class="container left-container">
+    <h1>Left Container</h1>
+    <form id="spotify-form">
+      <label for="spotify-link">Enter a Spotify link:</label>
+      <input type="text" id="spotify-link" name="spotify-link">
+      <button type="submit">Embed</button>
+    </form>
+    <div id="spotify-player"></div>
+  </div>
+  <div class="container right-container">
+    <h1>Right Container</h1>
+    <form id="imdb-form">
+      <label for="imdb-id">Enter an IMDb ID:</label>
+      <input type="text" id="imdb-id" name="imdb-id">
+      <button type="submit">Search</button>
+    </form>
+    <div id="tmdb-info"></div>
+  </div>
+  <button class="switch-button"></button>
+  <script src="script.js"></script>
+
+</body>
+
 </html>

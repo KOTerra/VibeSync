@@ -40,4 +40,13 @@ imdbForm.addEventListener("submit", async (event) => {
 
 switchButton.addEventListener("click", () => {
   document.body.classList.toggle("switched");
+  if (document.body.classList.contains("switched")) {
+    spotifyForm.style.display = "none";
+    imdbForm.style.display = "block";
+    spotifyPlayer.innerHTML=null;
+  } else {
+    spotifyForm.style.display = "block";
+    imdbForm.style.display = "none";
+    tmdbInfo.innerHTML=null;
+  }
 });

@@ -1,9 +1,9 @@
-const SpotifyWebApi =require('spotify-web-api-node');
-const spotifyApi =new SpotifyWebApi({
+const SpotifyWebApi = require('spotify-web-api-node');
+const spotifyApi = new SpotifyWebApi({
     clientId: '9a324ce2de004464916503c99da4c2f2',
     clientSecret: '6855817946bf4204b187537c4c47dd70',
     redirectUri: 'http://localhost:3000/'
-  });
+});
 function recommendSongs() {
     spotifyApi.clientCredentialsGrant().then((data) => {
         spotifyApi.setAccessToken(data.body.access_token);
@@ -35,6 +35,10 @@ function recommendSongs() {
                 tracks.forEach((track) => {
                     console.log(`${track.name} by ${track.artists[0].name}`);
                     console.log(`${track.external_urls.spotify}`);
+                   /*const embedUrl = `${track.external_urls.spotify}`.value.replace("open.spotify.com", "embed.spotify.com");
+                    spotifyPlayer.innerHTML = `
+  <iframe src="${embedUrl}" width="400" height="500" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+`;*/
                 });
             },
             function (err) {
