@@ -1,3 +1,6 @@
+const tmdbApiKey = 'd1daab170c2670052a62b699848bd6ba';
+
+
 const switchButton = document.querySelector(".switch-button");
 const leftContainer = document.querySelector(".left-container");
 const rightContainer = document.querySelector(".right-container");
@@ -20,7 +23,7 @@ spotifyForm.addEventListener("submit", (event) => {
 imdbForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   const imdbIdValue = imdbId.value;
-  const response = await fetch(`https://api.themoviedb.org/3/find/${imdbIdValue}?api_key=${tmdb_api_key}&external_source=imdb_id`);
+  const response = await fetch(`https://api.themoviedb.org/3/find/${imdbIdValue}?api_key=${tmdbApiKey}&external_source=imdb_id`);
   const data = await response.json();
   if (data.movie_results.length > 0) {
     const movie = data.movie_results[0];
