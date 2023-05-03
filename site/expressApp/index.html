@@ -13,8 +13,8 @@
     <h1>Spotify</h1>
     <form id="spotify-form">
       <label for="spotify-link">Enter a Spotify link:</label>
-      <input type="text" id="spotify-link" name="spotify-link">
-      <button type="submit">Embed</button>
+      <input type="text" id="spotify-link" name="spotify-link" onClick="this.select();">
+      <button type="submit">Search</button>
     </form>
     <div id="spotify-player"></div>
   </div>
@@ -22,7 +22,7 @@
     <h1>IMDb</h1>
     <form id="imdb-form">
       <label for="imdb-id">Enter an IMDb ID:</label>
-      <input type="text" id="imdb-id" name="imdb-id">
+      <input type="text" id="imdb-id" name="imdb-id" onClick="this.select();">
       <button type="submit">Search</button>
     </form>
     <div id="tmdb-info"></div>

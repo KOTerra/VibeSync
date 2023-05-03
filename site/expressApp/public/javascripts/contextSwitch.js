@@ -11,16 +11,24 @@ const imdbForm = document.querySelector("#imdb-form");
 const imdbId = document.querySelector("#imdb-id");
 const tmdbInfo = document.querySelector("#tmdb-info");
 
-spotifyForm.addEventListener("submit", (event) => {
+spotifyForm.style.display = "block";
+imdbForm.style.display = "none";
+tmdbInfo.innerHTML = null;
+
+
+spotifyForm.addEventListener("input", (event) => {
   event.preventDefault();
   const embedUrl = spotifyLink.value.replace("open.spotify.com", "embed.spotify.com");
   spotifyPlayer.innerHTML = `
   <iframe src="${embedUrl}" width="400" height="500" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
 `;
 });
+spotifyForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+});
 
 
-imdbForm.addEventListener("submit", async (event) => {
+imdbForm.addEventListener("input", async (event) => {
   event.preventDefault();
   const imdbIdValue = imdbId.value;
   const response = await fetch(`https://api.themoviedb.org/3/find/${imdbIdValue}?api_key=${tmdbApiKey}&external_source=imdb_id`);
@@ -37,17 +45,26 @@ imdbForm.addEventListener("submit", async (event) => {
     tmdbInfo.innerHTML = "<p>No results found.</p>";
   }
 });
+imdbForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const imdbIdValue = imdbId.value;
+  const response = await fetch(`https://api.themoviedb.org/3/find/${imdbIdValue}?api_key=${tmdbApiKey}&external_source=imdb_id`);
+  const data = await response.json();
+
+});
 
 switchButton.addEventListener("click", () => {
   document.body.classList.toggle("switched");
   setTimeout(() => {
     if (document.body.classList.contains("switched")) {
       spotifyForm.style.display = "none";
+      spotifyForm.reset();
       imdbForm.style.display = "block";
       spotifyPlayer.innerHTML = null;
     } else {
       spotifyForm.style.display = "block";
       imdbForm.style.display = "none";
+      imdbForm.reset();
       tmdbInfo.innerHTML = null;
     }
   }, 500);
