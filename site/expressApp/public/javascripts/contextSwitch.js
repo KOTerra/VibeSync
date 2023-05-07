@@ -10,6 +10,9 @@ const spotifyPlayer = document.querySelector("#spotify-player");
 const imdbForm = document.querySelector("#imdb-form");
 const imdbId = document.querySelector("#imdb-id");
 const tmdbInfo = document.querySelector("#tmdb-info");
+const tmdbResult = document.querySelector("#tmdb-result");
+const spotifyResult = document.querySelector("#spotify-result");
+
 
 spotifyForm.style.display = "block";
 imdbForm.style.display = "none";
@@ -17,7 +20,7 @@ tmdbInfo.innerHTML = null;
 
 
 
-spotifyForm.addEventListener("submit", (event) => {
+spotifyForm.addEventListener("input", (event) => {
   event.preventDefault();
   const embedUrl = spotifyLink.value.replace("open.spotify.com", "embed.spotify.com");
   spotifyPlayer.innerHTML = `
@@ -25,6 +28,7 @@ spotifyForm.addEventListener("submit", (event) => {
 `;
 });
 spotifyForm.addEventListener("submit", (event) => {
+  console.log("aaa");
   event.preventDefault();
 });
 
@@ -46,11 +50,42 @@ imdbForm.addEventListener("input", async (event) => {
     tmdbInfo.innerHTML = "<p>No results found.</p>";
   }
 });
-imdbForm.addEventListener("submit", async (event) => {
+
+imdbForm.addEventListener("submit", (event) => {
   event.preventDefault();
+
   const imdbIdValue = imdbId.value;
-  const response = await fetch(`https://api.themoviedb.org/3/find/${imdbIdValue}?api_key=${tmdbApiKey}&external_source=imdb_id`);
-  const data = await response.json();
+  const text = imdbIdValue;
+  const resultDiv = spotifyResult;
+  fetch('/movie', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ text: text })
+
+  })
+    .then((response) => {
+      response.json();
+      resultDiv.insertAdjacentHTML('beforeend',`<p>${response.json().value}<p>`);
+    })
+    .then((tracks) => {
+      console.log("a");
+      console.log(tracks);
+      console.log(`Found ${tracks.length} tracks:`);
+      tracks.forEach((track) => {
+        const embedUrl = `${track.external_urls.spotify}`.value.replace("open.spotify.com", "embed.spotify.com");
+        resultDiv.insertAdjacentHTML('beforeend', `<iframe src="${embedUrl}" width="400" height="500" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>`);
+
+        console.log(`${track.name} by ${track.artists[0].name}`);
+        console.log(`${track.external_urls.spotify}`);
+      });
+    })
+    .catch((error) => {
+      console.error(error);
+      resultDiv.insertAdjacentHTML('beforeend',`<p>An error occurred. Please try againn. ${error}</p>`);
+    });
+
 
 });
 
