@@ -16,7 +16,8 @@ imdbForm.style.display = "none";
 tmdbInfo.innerHTML = null;
 
 
-spotifyForm.addEventListener("input", (event) => {
+
+spotifyForm.addEventListener("submit", (event) => {
   event.preventDefault();
   const embedUrl = spotifyLink.value.replace("open.spotify.com", "embed.spotify.com");
   spotifyPlayer.innerHTML = `
