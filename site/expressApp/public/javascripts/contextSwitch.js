@@ -42,7 +42,7 @@ imdbForm.addEventListener("input", async (event) => {
   if (data.movie_results.length > 0) {
     const movie = data.movie_results[0];
     const tmdbInfoHTML = `
-      <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" width="400" alt="${movie.title} poster">  
+      <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" width="300" alt="${movie.title} poster">  
        <h2>${movie.title} (${movie.release_date.substr(0, 4)})</h2>
       <p>${movie.overview}</p>
     `;
