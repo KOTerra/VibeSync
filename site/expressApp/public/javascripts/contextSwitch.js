@@ -29,16 +29,35 @@ spotifyForm.addEventListener("input", (event) => {
 });
 spotifyForm.addEventListener("submit", (event) => {
   event.preventDefault();
-  spotifyResult.innerHTML=null;
+  spotifyResult.innerHTML = null;
+  fetch('/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ text: text })
 
+  })
+    .then((response) => response.json())
+    .then((data) => {
+
+     })
+    .catch(error => { 
+
+    });
 });
 
 
 imdbForm.addEventListener("input", async (event) => {
   event.preventDefault();
-  const imdbIdValue = imdbId.value;
+  const text = imdbId.value;
+
+  const pattern = /https?:\/\/(?:www\.)?imdb\.com\/title\/(tt\d+)/i;
+  const match = text.match(pattern);
+  const imdbIdValue= match ? match[1] : text;
   const response = await fetch(`https://api.themoviedb.org/3/find/${imdbIdValue}?api_key=${tmdbApiKey}&external_source=imdb_id`);
   const data = await response.json();
+  
   if (data.movie_results.length > 0) {
     const movie = data.movie_results[0];
     const tmdbInfoHTML = `
@@ -54,7 +73,7 @@ imdbForm.addEventListener("input", async (event) => {
 
 imdbForm.addEventListener("submit", (event) => {
   event.preventDefault();
-  spotifyResult.innerHTML=null;
+  spotifyResult.innerHTML = null;
 
   const imdbIdValue = imdbId.value;
   const text = imdbIdValue;
@@ -92,14 +111,14 @@ switchButton.addEventListener("click", () => {
     if (document.body.classList.contains("switched")) {
       spotifyForm.style.display = "none";
       spotifyForm.reset();
-      tmdbResult.innerHTML=null;
+      tmdbResult.innerHTML = null;
       imdbForm.style.display = "block";
       spotifyPlayer.innerHTML = null;
     } else {
       spotifyForm.style.display = "block";
       imdbForm.style.display = "none";
       imdbForm.reset();
-      spotifyResult.innerHTML=null;
+      spotifyResult.innerHTML = null;
       tmdbInfo.innerHTML = null;
     }
   }, 500);

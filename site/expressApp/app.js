@@ -2,7 +2,6 @@ const tmdbApiKey = 'd1daab170c2670052a62b699848bd6ba';
 
 const bodyParser = require('body-parser');
 
-const Vader = require('vader-sentiment');
 const express = require('express');
 const app = express();
 const port = 3000;
@@ -29,7 +28,9 @@ app.get('/', (req, res) => {
 app.post('/', async (req, res) => {
   const text = req.body.text;
 
-  const imdbIdValue = text;
+  const pattern = /https?:\/\/(?:www\.)?imdb\.com\/title\/(tt\d+)/i;
+  const match = text.match(pattern);
+  const imdbIdValue= match ? match[1] : text;
   const response = await fetch(`https://api.themoviedb.org/3/find/${imdbIdValue}?api_key=${tmdbApiKey}&external_source=imdb_id`);
   const data = await response.json();
 
@@ -40,6 +41,10 @@ app.post('/', async (req, res) => {
 
     res.send(tracks);
   }
+});
+
+app.post('/', async(req,res)=>{
+
 });
 
 app.listen(port, () => {
