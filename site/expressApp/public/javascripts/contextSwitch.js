@@ -28,8 +28,9 @@ spotifyForm.addEventListener("input", (event) => {
 `;
 });
 spotifyForm.addEventListener("submit", (event) => {
-  console.log("aaa");
   event.preventDefault();
+  spotifyResult.innerHTML=null;
+
 });
 
 
@@ -53,6 +54,7 @@ imdbForm.addEventListener("input", async (event) => {
 
 imdbForm.addEventListener("submit", (event) => {
   event.preventDefault();
+  spotifyResult.innerHTML=null;
 
   const imdbIdValue = imdbId.value;
   const text = imdbIdValue;
