@@ -30,9 +30,10 @@ async function recommendSongs(movie) {
             target_valence: genreAverages.valence,
         };
 
-        const data2 = await spotifyApi.getRecommendations(searchOptions);
-        const tracks = data2.body.tracks;
-        
+        const tracks = (await spotifyApi.getRecommendations(searchOptions)).body;
+        //console.log(tracks);
+        //const tracks = data2.body.tracks;
+
         return tracks;
     } catch (err) {
         console.error(err);
@@ -45,12 +46,14 @@ function calculateGenreAverages(movie, genres) {
     const genreValues = {};
 
     matchingGenres.forEach(genre => {
-        genreValues.acousticness = (genreValues.acousticness || 0) + genres[genre].acousticness;
-        genreValues.danceability = (genreValues.danceability || 0) + genres[genre].danceability;
-        genreValues.liveness = (genreValues.liveness || 0) + genres[genre].liveness;
-        genreValues.loudness = (genreValues.loudness || 0) + genres[genre].loudness;
-        genreValues.tempo = (genreValues.tempo || 0) + genres[genre].tempo;
-        genreValues.valence = (genreValues.valence || 0) + genres[genre].valence;
+        if (genres[genre]) {
+            genreValues.acousticness = (genreValues.acousticness || 0) + genres[genre].acousticness;
+            genreValues.danceability = (genreValues.danceability || 0) + genres[genre].danceability;
+            genreValues.liveness = (genreValues.liveness || 0) + genres[genre].liveness;
+            genreValues.loudness = (genreValues.loudness || 0) + genres[genre].loudness;
+            genreValues.tempo = (genreValues.tempo || 0) + genres[genre].tempo;
+            genreValues.valence = (genreValues.valence || 0) + genres[genre].valence;
+        }
     });
 
     const numMatchingGenres = matchingGenres.filter(genre => genres[genre]).length;

@@ -57,7 +57,7 @@ imdbForm.addEventListener("submit", (event) => {
   const imdbIdValue = imdbId.value;
   const text = imdbIdValue;
   const resultDiv = spotifyResult;
-  fetch('/movie', {
+  fetch('/', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -66,21 +66,19 @@ imdbForm.addEventListener("submit", (event) => {
 
   })
     .then((response) => response.json())
-    .then((tracks) => {
-      console.log("a");
-      console.log(tracks);
-      console.log(`Found ${tracks.length} tracks:`);
-      tracks.forEach((track) => {
-        const embedUrl = `${track.external_urls.spotify}`.value.replace("open.spotify.com", "embed.spotify.com");
-        resultDiv.insertAdjacentHTML('beforeend', `<iframe src="${embedUrl}" width="400" height="500" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>`);
+    .then((data) => {
+      const tracks = data.tracks;
 
-        console.log(`${track.name} by ${track.artists[0].name}`);
-        console.log(`${track.external_urls.spotify}`);
+      tracks.forEach((track) => {
+
+        const embedUrl = `${track.external_urls.spotify}`.replace("open.spotify.com", "embed.spotify.com");
+        resultDiv.insertAdjacentHTML('beforeend', `<iframe src="${embedUrl}" width="400" height="150" frameborder="0" allowtransparency="true" frameborder="0" allow="encrypted-media"></iframe>`);
+
       });
     })
     .catch((error) => {
       console.error(error);
-      resultDiv.insertAdjacentHTML('beforeend',`<p>An error occurred. Please try againn. ${error}</p>`);
+      resultDiv.insertAdjacentHTML('beforeend', `<p>An error occurred. Please try againn. ${error}</p>`);
     });
 
 

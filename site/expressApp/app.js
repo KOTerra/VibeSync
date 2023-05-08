@@ -26,7 +26,7 @@ app.get('/', (req, res) => {
 
 
 
-app.post('/movie', async (req, res) => {
+app.post('/', async (req, res) => {
   const text = req.body.text;
 
   const imdbIdValue = text;
