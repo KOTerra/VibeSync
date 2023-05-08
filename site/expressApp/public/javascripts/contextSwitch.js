@@ -78,7 +78,7 @@ imdbForm.addEventListener("submit", (event) => {
     })
     .catch((error) => {
       console.error(error);
-      resultDiv.insertAdjacentHTML('beforeend', `<p>An error occurred. Please try againn. ${error}</p>`);
+      resultDiv.insertAdjacentHTML('beforeend', `<p>An error occurred. Please try again. ${error}</p>`);
     });
 
 
@@ -90,41 +90,15 @@ switchButton.addEventListener("click", () => {
     if (document.body.classList.contains("switched")) {
       spotifyForm.style.display = "none";
       spotifyForm.reset();
+      tmdbResult.innerHTML=null;
       imdbForm.style.display = "block";
       spotifyPlayer.innerHTML = null;
     } else {
       spotifyForm.style.display = "block";
       imdbForm.style.display = "none";
       imdbForm.reset();
+      spotifyResult.innerHTML=null;
       tmdbInfo.innerHTML = null;
     }
   }, 500);
 });
-/*
-const analyzeButton = document.querySelector('#analyze-button');
-const resultDiv = document.querySelector('#result');
-
-analyzeButton.addEventListener('click', () => {
-  const text = document.querySelector('#text').value;
-  fetch('/', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ text: text })
-  })
-    .then((response) => response.json())
-    .then((sentiment) => {
-      resultDiv.innerHTML = `
-        <p>Positive: ${sentiment.pos.toFixed(2)}</p>
-        <p>Neutral: ${sentiment.neu.toFixed(2)}</p>
-        <p>Negative: ${sentiment.neg.toFixed(2)}</p>
-        <p>Compound: ${sentiment.compound.toFixed(2)}</p>
-      `;
-    })
-    .catch((error) => {
-      console.error(error);
-      resultDiv.innerHTML = '<p>An error occurred. Please try again later.</p>';
-    });
-});
-*/
