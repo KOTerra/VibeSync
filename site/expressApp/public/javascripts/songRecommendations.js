@@ -6,6 +6,7 @@ const spotifyApi = new SpotifyWebApi({
 });
 
 const genreApproximationValues = require('./genreApproximationValues');
+const vader = require('vader-sentiment');
 
 
 async function recommendSongs(movie) {
@@ -14,25 +15,12 @@ async function recommendSongs(movie) {
         spotifyApi.setAccessToken(data.body.access_token);
 
         const genreAverages = calculateGenreAverages(movie, genreApproximationValues.genres);
+        const sentimentValues=performSentimentAnalysis(movie);
 
-        const searchOptions = {
-            limit: 10,
-            market: 'US',
-            seed_genres: 'rock, r-n-b, pop, electronic, blues',
-            target_acousticness: genreAverages.acousticness,
-            target_danceability: genreAverages.danceability,
-            target_key: 2,
-            target_liveness: genreAverages.liveness,
-            target_loudness: genreAverages.loudness,
-            target_mode: 1,
-            target_popularity: 50,
-            target_tempo: genreAverages.tempo,
-            target_valence: genreAverages.valence,
-        };
+        const searchOptions = generateSearchOptions(genreAverages,sentimentValues);
 
         const tracks = (await spotifyApi.getRecommendations(searchOptions)).body;
-        //console.log(tracks);
-        //const tracks = data2.body.tracks;
+
 
         return tracks;
     } catch (err) {
@@ -67,6 +55,35 @@ function calculateGenreAverages(movie, genres) {
 
     return genreValues;
 }
+function performSentimentAnalysis(movie) {
+    const sentiment = new vader.SentimentIntensityAnalyzer.polarity_scores(movie.overview);
+    const sentimentValues = {};
+    sentimentValues.positive = sentiment.pos;
+    sentimentValues.neutral = sentiment.neu;
+    sentimentValues.negative = sentiment.neg;
+    sentimentValues.valence = sentiment.compound;
+    console.log(sentimentValues);
+    return sentimentValues;
+}
 
+function generateSearchOptions(genreAverages, sentimentValues) {
+    const searchOptions = {
+        limit: 10,
+        market: 'US',
+        seed_genres: 'rock, r-n-b, pop, electronic, blues',
+        target_acousticness: genreAverages.acousticness,
+        target_danceability: genreAverages.danceability,
+        target_key: 0,
+        target_liveness: genreAverages.liveness,
+        target_loudness: genreAverages.loudness,
+        target_mode: 6,
+        target_popularity: 200,
+        target_tempo: genreAverages.tempo,
+        target_valence: genreAverages.valence,
+    };
+    searchOptions.target_valence += sentimentValues;
+    searchOptions.target_valence /= 2;
+    return searchOptions;
+}
 
 module.exports = { recommendSongs };

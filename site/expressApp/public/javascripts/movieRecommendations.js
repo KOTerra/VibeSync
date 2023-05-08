@@ -1,5 +1,9 @@
 const tmdbApiKey = 'd1daab170c2670052a62b699848bd6ba';
 
+function recommendMovies(track){
+  
+}
+
 function reccommendMovies() {
   const playlistLinkInput = document.getElementById('spotify-link');
   const movieListElement = document.getElementById('movie-list');
@@ -111,4 +115,4 @@ function reccommendMovies() {
 }
 
 
-module.exports = { reccommendMovies };
+module.exports = { recommendMovies };
