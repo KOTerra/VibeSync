@@ -65,10 +65,7 @@ imdbForm.addEventListener("submit", (event) => {
     body: JSON.stringify({ text: text })
 
   })
-    .then((response) => {
-      response.json();
-      resultDiv.insertAdjacentHTML('beforeend',`<p>${response.json().value}<p>`);
-    })
+    .then((response) => response.json())
     .then((tracks) => {
       console.log("a");
       console.log(tracks);
