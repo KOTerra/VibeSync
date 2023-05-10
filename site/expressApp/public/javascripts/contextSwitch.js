@@ -28,7 +28,9 @@ spotifyForm.addEventListener("input", (event) => {
 
 spotifyForm.addEventListener("submit", (event) => {
   event.preventDefault();
-  spotifyResult.innerHTML = null;
+  console.error("aaa");
+  const text=spotifyLink.value;
+  tmdbResult.innerHTML = null;
   fetch('/', {
     method: 'POST',
     headers: {
@@ -42,7 +44,7 @@ spotifyForm.addEventListener("submit", (event) => {
       tmdbResult.innerHTML=`<p>a${data}</p>`;
      })
     .catch(error => { 
-
+      console.error(error);
     });
 });
 
