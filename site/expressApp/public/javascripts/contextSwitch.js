@@ -18,8 +18,6 @@ spotifyForm.style.display = "block";
 imdbForm.style.display = "none";
 tmdbInfo.innerHTML = null;
 
-
-
 spotifyForm.addEventListener("input", (event) => {
   event.preventDefault();
   const embedUrl = spotifyLink.value.replace("open.spotify.com", "embed.spotify.com");
@@ -27,6 +25,7 @@ spotifyForm.addEventListener("input", (event) => {
   <iframe src="${embedUrl}" width="400" height="500" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
 `;
 });
+
 spotifyForm.addEventListener("submit", (event) => {
   event.preventDefault();
   spotifyResult.innerHTML = null;
@@ -40,7 +39,7 @@ spotifyForm.addEventListener("submit", (event) => {
   })
     .then((response) => response.json())
     .then((data) => {
-
+      tmdbResult.innerHTML=`<p>a${data}</p>`;
      })
     .catch(error => { 
 

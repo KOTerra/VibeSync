@@ -1,4 +1,5 @@
 const tmdbApiKey = require('../api/apiKeys').tmdbApiKey;
+const spotifyApi =require('../api/apiKeys').spotifyApi;
 
 function recommendMovies(track){
   

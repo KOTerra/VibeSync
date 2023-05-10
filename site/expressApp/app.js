@@ -1,4 +1,5 @@
 const tmdbApiKey = require('./public/api/apiKeys').tmdbApiKey;
+const spotifyApi = require('./public/api/apiKeys').spotifyApi;
 
 const bodyParser = require('body-parser');
 
@@ -24,29 +25,60 @@ app.get('/', (req, res) => {
 });
 
 
-
 app.post('/', async (req, res) => {
   const text = req.body.text;
 
-  const pattern = /https?:\/\/(?:www\.)?imdb\.com\/title\/(tt\d+)/i;
-  const match = text.match(pattern);
-  const imdbIdValue= match ? match[1] : text;
-  const response = await fetch(`https://api.themoviedb.org/3/find/${imdbIdValue}?api_key=${tmdbApiKey}&external_source=imdb_id`);
-  const data = await response.json();
+  const imdbPattern = /https?:\/\/(?:www\.)?imdb\.com\/title\/(tt\d+)/i;
+  const spotifyPattern = /(?:https?:\/\/)?(?:www\.)?open\.spotify\.com\/track\/([a-zA-Z0-9]+)(?:.*)?/;
 
-  if (data.movie_results.length > 0) {
-    const movie = data.movie_results[0]; 
+  if (spotifyPattern.test(text)) {
+    console.log('spotify');
 
-    const tracks = await songRecommendations.recommendSongs(movie);
+    const trackId = trackUrl.match(spotifyPattern)[1];
+    const apiUrl = `https://api.spotify.com/v1/tracks/${trackId}`;
+  
+   /* const response = fetch(apiUrl, {
+      headers: {
+        Authorization: `Bearer ${spotifyApi.getAccessToken}`
+      }
+    });
+    const data = await response.json();
+   res.send(data);*/
+  } 
+  if(imdbPattern.test(text)) {
+    console.log('imdb');
+    const match = text.match(imdbPattern);
+    const imdbIdValue = match ? match[1] : text;
+    const response = await fetch(`https://api.themoviedb.org/3/find/${imdbIdValue}?api_key=${tmdbApiKey}&external_source=imdb_id`);
+    const data = await response.json();
 
-    res.send(tracks);
+    if (data.movie_results.length > 0) {
+      const movie = data.movie_results[0];
+
+      const tracks = await songRecommendations.recommendSongs(movie);
+
+      res.send(tracks);
+    }
   }
-});
-
-app.post('/', async(req,res)=>{
 
 });
 
+/*app.post('/', async (req, res) => {
+  const trackUrl = req.body.text;
+  const regex = /\/track\/(\w+)/;
+  const trackId = trackUrl.match(regex)[1];
+  const apiUrl = `https://api.spotify.com/v1/tracks/${trackId}`;
+
+  const response = fetch(apiUrl, {
+    headers: {
+      Authorization: `Bearer ${spotifyApi.getAccessToken}`
+    }
+  });
+  const data = await response.json();
+  
+  res.send(data);
+});
+*/
 app.listen(port, () => {
   console.log('Server started on port ' + port);
 });
