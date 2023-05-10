@@ -1,4 +1,4 @@
-const tmdbApiKey = 'd1daab170c2670052a62b699848bd6ba';
+const tmdbApiKey = require('./public/api/apiKeys').tmdbApiKey;
 
 const bodyParser = require('body-parser');
 
