@@ -28,7 +28,6 @@ spotifyForm.addEventListener("input", (event) => {
 
 spotifyForm.addEventListener("submit", (event) => {
   event.preventDefault();
-  console.error("aaa");
   const text=spotifyLink.value;
   tmdbResult.innerHTML = null;
   fetch('/', {
@@ -39,9 +38,11 @@ spotifyForm.addEventListener("submit", (event) => {
     body: JSON.stringify({ text: text })
 
   })
-    .then((response) => response.json())
+    .then((response) => {response.json();
+      console.log(response);
+    })
     .then((data) => {
-      tmdbResult.innerHTML=`<p>a${data}</p>`;
+      tmdbResult.innerHTML=`<p>${data}</p>`;
      })
     .catch(error => { 
       console.error(error);

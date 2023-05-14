@@ -32,21 +32,23 @@ app.post('/', async (req, res) => {
   const imdbIdPattern = /(tt\d+)/i;
   const spotifyLinkPattern = /(?:https?:\/\/)?(?:www\.)?open\.spotify\.com\/track\/([a-zA-Z0-9]+)(?:.*)?/;
   if (spotifyLinkPattern.test(text)) {
-    console.log('spotify');
-
+    if (spotifyApi.getAccessToken() == null) {
+      const acc = await spotifyApi.clientCredentialsGrant();
+      spotifyApi.setAccessToken(acc.body.access_token);
+    }
     const trackId = text.match(spotifyLinkPattern)[1];
-    const apiUrl = `https://api.spotify.com/v1/tracks/${trackId}`;
-
-    fetch(apiUrl, {
+    const apiUrl = `https://api.spotify.com/v1/audio-features/${trackId}`;
+    const response=await fetch(apiUrl, {
       headers: {
         Authorization: `Bearer ${spotifyApi.getAccessToken()}`
       }
-    })
-    .then(response=>response.json())
-    .then(data=>res.send(data));
+    });
+    const trackFeatures=await response.json();
+  
+    const movies= movieRecommendations.recommendMovies(trackFeatures);
+    res.json(movies);
   }
   if (imdbLinkPattern.test(text) || imdbIdPattern.test(text)) {
-    console.log('imdb');
     const match = text.match(imdbLinkPattern);
     const imdbIdValue = match ? match[1] : text;
     const response = await fetch(`https://api.themoviedb.org/3/find/${imdbIdValue}?api_key=${tmdbApiKey}&external_source=imdb_id`);

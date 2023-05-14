@@ -5,8 +5,8 @@ const vader = require('vader-sentiment');
 
 async function recommendSongs(movie) {
     try {
-        const data = await spotifyApi.clientCredentialsGrant();
-        spotifyApi.setAccessToken(data.body.access_token);
+        const acc = await spotifyApi.clientCredentialsGrant();
+        spotifyApi.setAccessToken(acc.body.access_token);
 
         const genreAverages = calculateGenreAverages(movie, genreApproximationValues.genres);
         const sentimentValues=performSentimentAnalysis(movie);
@@ -56,15 +56,14 @@ function performSentimentAnalysis(movie) {
     sentimentValues.neutral = sentiment.neu;
     sentimentValues.negative = sentiment.neg;
     sentimentValues.valence = sentiment.compound;
-    console.log(sentimentValues);
     return sentimentValues;
 }
 
 function generateSearchOptions(genreAverages, sentimentValues) {
     const searchOptions = {
-        limit: 10,
+        limit: 50,
         market: 'US',
-        seed_genres: 'rock, r-n-b, pop, electronic, blues',
+        seed_genres: getRandomSeedGenres(),
         target_acousticness: genreAverages.acousticness,
         target_danceability: genreAverages.danceability,
         target_key: 0,
@@ -79,5 +78,9 @@ function generateSearchOptions(genreAverages, sentimentValues) {
     searchOptions.target_valence /= 2;
     return searchOptions;
 }
+function getRandomSeedGenres() {
+    const genres = ['rock', 'r-n-b', 'pop', 'electronic', 'blues'];
+    return genres.sort(() => Math.random() - 0.5).slice(0, 3).join(',');
+  }
 
 module.exports = { recommendSongs };
