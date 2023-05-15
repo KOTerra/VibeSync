@@ -45,7 +45,7 @@ app.post('/', async (req, res) => {
     });
     const trackFeatures=await response.json();
   
-    const movies= movieRecommendations.recommendMovies(trackFeatures);
+    const movies= await movieRecommendations.recommendMovies(trackFeatures);
     res.json(movies);
   }
   if (imdbLinkPattern.test(text) || imdbIdPattern.test(text)) {
@@ -65,22 +65,6 @@ app.post('/', async (req, res) => {
 
 });
 
-/*app.post('/', async (req, res) => {
-  const trackUrl = req.body.text;
-  const regex = /\/track\/(\w+)/;
-  const trackId = trackUrl.match(regex)[1];
-  const apiUrl = `https://api.spotify.com/v1/tracks/${trackId}`;
-
-  const response = fetch(apiUrl, {
-    headers: {
-      Authorization: `Bearer ${spotifyApi.getAccessToken}`
-    }
-  });
-  const data = await response.json();
-  
-  res.send(data);
-});
-*/
 app.listen(port, () => {
   console.log('Server started on port ' + port);
 });

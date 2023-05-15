@@ -28,8 +28,9 @@ spotifyForm.addEventListener("input", (event) => {
 
 spotifyForm.addEventListener("submit", (event) => {
   event.preventDefault();
-  const text=spotifyLink.value;
+  const text = spotifyLink.value;
   tmdbResult.innerHTML = null;
+  const resultDiv = tmdbResult;
   fetch('/', {
     method: 'POST',
     headers: {
@@ -38,13 +39,17 @@ spotifyForm.addEventListener("submit", (event) => {
     body: JSON.stringify({ text: text })
 
   })
-    .then((response) => {response.json();
-      console.log(response);
+    .then((response) => {
+      console.log(response.body);
+      return response.json();
     })
     .then((data) => {
-      tmdbResult.innerHTML=`<p>${data}</p>`;
-     })
-    .catch(error => { 
+      data.forEach(movie => {
+       resultDiv.insertAdjacentHTML('beforeend', ` <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" width="100" alt="${movie.title} poster">  
+        <h2>${movie.title} (${movie.release_date.substr(0, 4)})</h2>`);
+      });
+    })
+    .catch(error => {
       console.error(error);
     });
 });
@@ -56,10 +61,10 @@ imdbForm.addEventListener("input", async (event) => {
 
   const pattern = /https?:\/\/(?:www\.)?imdb\.com\/title\/(tt\d+)/i;
   const match = text.match(pattern);
-  const imdbIdValue= match ? match[1] : text;
+  const imdbIdValue = match ? match[1] : text;
   const response = await fetch(`https://api.themoviedb.org/3/find/${imdbIdValue}?api_key=${tmdbApiKey}&external_source=imdb_id`);
   const data = await response.json();
-  
+
   if (data.movie_results.length > 0) {
     const movie = data.movie_results[0];
     const tmdbInfoHTML = `
