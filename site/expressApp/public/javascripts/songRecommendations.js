@@ -1,7 +1,7 @@
 const spotifyApi = require('../api/apiKeys').spotifyApi;
 const genreApproximationValues = require('./genreApproximationValues');
 const vader = require('vader-sentiment');
-
+const shuffle=require('./utils').shuffle;
 
 async function recommendSongs(movie) {
     try {
@@ -14,7 +14,6 @@ async function recommendSongs(movie) {
         const searchOptions = generateSearchOptions(genreAverages,sentimentValues);
 
         const tracks = (await spotifyApi.getRecommendations(searchOptions)).body;
-
 
         return tracks;
     } catch (err) {
@@ -74,13 +73,15 @@ function generateSearchOptions(genreAverages, sentimentValues) {
         target_tempo: genreAverages.tempo,
         target_valence: genreAverages.valence,
     };
-    searchOptions.target_valence += sentimentValues;
-    searchOptions.target_valence /= 2;
+    searchOptions.target_valence = sentimentValues;
+    //searchOptions.target_valence /= 2;
     return searchOptions;
 }
 function getRandomSeedGenres() {
-    const genres = ['rock', 'r-n-b', 'pop', 'electronic', 'blues'];
-    return genres.sort(() => Math.random() - 0.5).slice(0, 3).join(',');
+    let genres = ['rock', 'metal', 'pop', 'electronic', 'blues'];
+    shuffle(genres);
+    genres.slice(3,4);
+    return genres;
   }
 
 module.exports = { recommendSongs };
