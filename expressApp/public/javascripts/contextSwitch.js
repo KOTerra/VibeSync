@@ -25,6 +25,7 @@ spotifyForm.addEventListener("input", (event) => {
 `;
 });
 
+
 spotifyForm.addEventListener("submit", (event) => {
   event.preventDefault();
   const text = spotifyLink.value;
